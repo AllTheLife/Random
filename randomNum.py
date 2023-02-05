@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import (QLineEdit, QWidget, QGridLayout, QPushButton, QLabel)
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import QTime, Qt
 from random import randint
 
 
@@ -24,6 +24,8 @@ class Random(QWidget):
         end = int(self.toEdit.text())
         randomNumber = randint(begin, end)
         self.randomNumberWidget.setText(str(randomNumber))
+        self.dateTime = QTime.currentTime()
+        self.dateTimeWidget.setText("上一次抽号时间: %s" % self.dateTime.toString())
 
     def setGridLayout(self):
         self.grid = QGridLayout()
@@ -44,6 +46,11 @@ font-size: 60px;""")
         self.fromEdit = QLineEdit("1")
         self.toEdit = QLineEdit("53")
 
+        self.dateTime = QTime.currentTime()
+        self.dateTimeWidget = QLabel(self)
+        self.dateTimeWidget.setText("上一次抽号时间: Nil")
+        self.dateTimeWidget.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
         self.getRandomButton = QPushButton("开始抽号")
         self.getRandomButton.setStyleSheet("""
 background-color: #262626;
@@ -55,6 +62,7 @@ color: #FFFFFF;
         self.grid.addWidget(self.toEdit, 1, 2)
         self.grid.addWidget(self.randomNumberWidget, 2, 1)
         self.grid.addWidget(self.getRandomButton, 3, 1)
+        self.grid.addWidget(self.dateTimeWidget, 3, 2)
 
         self.getRandomButton.clicked.connect(self.getNums)
 
